@@ -1,6 +1,6 @@
 import React from "react";
 
-export default Thumbnail(props) {
+export default function Thumbnail(props) {
   return (
     <img src="props.src" onClick="props.handleTileClick" className="img-thumbnail" />
   );
