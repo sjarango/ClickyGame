@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import Thumbnail from './components/Thumbnail'
+import Score from './components/Score'
 
 class App extends Component {
 
@@ -20,24 +21,42 @@ class App extends Component {
     "https://raw.githubusercontent.com/sjarango/ClickyGame/2c23822c17bcaabca79c2c7ff916e9a1a5d4dd1c/client/images/Talkingcat.png",
     "https://raw.githubusercontent.com/sjarango/ClickyGame/2c23822c17bcaabca79c2c7ff916e9a1a5d4dd1c/client/images/Tammy_and_Bird_Person.png",
     "https://raw.githubusercontent.com/sjarango/ClickyGame/2c23822c17bcaabca79c2c7ff916e9a1a5d4dd1c/client/images/Tammy.png"
-
-    ]
+    ],
+    score: 0,
+    topScore: 0
   };
-  
 
-  shuffled = [];
+  clickedTiles = [];
 
-  shuffleTiles = () => {
-
-  }
+  // empty clickedTiles Array
+  // deploy to heroku img links?
+  // shuffle array on mount
+  // store images locally
   
   handleTitleClick = (evt) => {
-    // record click
-    // test for match
-    console.log(evt);
-    const shuffled = this.state.tiles.sort(() => 0.5 - Math.random());
 
-    this.setState({tiles: shuffled});
+    console.log(evt);
+    const clickedTile = evt.target.src;
+
+
+    if (this.clickedTiles.includes(clickedTile)) {
+      this.setState({ score: 0 });
+      return;
+    }
+
+    const newScore = this.state.score + 1;
+    const topScore = newScore > this.state.topScore ?
+      newScore :
+      this.state.topScore;
+
+    this.clickedTiles.push(clickedTile);
+
+    const shuffled = this.state.tiles.sort(() => 0.5 - Math.random());
+    this.setState({
+      tiles: shuffled,
+      score: newScore,
+      topScore: topScore
+    });
 
   }
 
@@ -46,6 +65,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <Score score={this.state.score} topScore={this.state.topScore} />
         {this.state.tiles.map((tile, idx) => <Thumbnail
           src={tile} key={idx} onClick={this.handleTitleClick}
         />)}
