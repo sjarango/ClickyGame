@@ -40,6 +40,7 @@ class App extends Component {
 
 
     if (this.clickedTiles.includes(clickedTile)) {
+      this.clickedTiles.length = 0;
       this.setState({ score: 0 });
       return;
     }
